@@ -8,7 +8,7 @@
 
   // check if user is logged in
   if(!isset($_SESSION['user_id'])){
-    header('Location: ../index.php');
+    header('Location: ../index.php?user=no');
   }
 
   //generate random ids
@@ -33,12 +33,6 @@
     }
   }
 
-  // echo "<pre>";
-  // print_r($random_question_numbers);
-  // echo "</pre>";
-
-  
-
   foreach($random_question_numbers as $key => $value) {
 
     $i = 0;
@@ -61,10 +55,6 @@
         $i++;
       }
     }
-
-    // echo "<pre>";
-    // print_r($random_answer_numbers);
-    // echo "</pre>";
 
     // get questions
     $query = "SELECT * FROM questions WHERE question_id = {$value} LIMIT 5";
@@ -125,28 +115,40 @@
   // check if the form is submited
   if(isset($_POST['submit'])){
 
-    $answer = "";
-
-    foreach ($random_answer_numbers as $key => $value) {
-
-      $answer = $_POST[$value];
-
-      $query = "SELECT * FROM questions WHERE question_id='{$value}' LIMIT 1";
-      $questions = mysqli_query($connection, $query);
-
-      $question = mysqli_fetch_assoc($questions);
-
-      if($question['answer'] == $answer){
-        $marks++;
+    // checking required fields
+    $req_fields = array('1', '2', '3', '4', '5');
+    foreach ($req_fields as $field) {
+      if(empty($_POST[$field])){
+        $errors[] = 'Question '.$field.' is required';
       }
-
-      $query = "UPDATE user SET marks={$marks} WHERE user_id={$_SESSION['user_id']}";
-      $result = mysqli_query($connection, $query);
-
-      verify_query($result);
     }
 
-    header('Location: profile.php?quiz_submit=true');
+    $answer = "";
+
+    if(empty($errors)){
+
+      foreach ($random_answer_numbers as $key => $value) {
+
+        $answer = $_POST[$value];
+
+        $query = "SELECT * FROM questions WHERE question_id='{$value}' LIMIT 1";
+        $questions = mysqli_query($connection, $query);
+
+        $question = mysqli_fetch_assoc($questions);
+
+        if($question['answer'] == $answer){
+          $marks++;
+        }
+
+        $query = "UPDATE user SET marks={$marks} WHERE user_id={$_SESSION['user_id']}";
+        $result = mysqli_query($connection, $query);
+
+        verify_query($result);
+      }
+
+      header('Location: profile.php?quiz_submit=true');
+
+    }
 
   }
 
@@ -169,6 +171,15 @@
 
           <h1 class="card-title text-center py-3">Complete the quiz</h1>
           <form class="form" action="quiz.php" method="post">
+            <div class="row">
+              <div class="col-md-4 col-sm-8 col-xs-10 mx-auto">
+                <?php
+                  if(isset($errors) && !empty($errors)){
+                    display_errors($errors);
+                  }
+                ?>
+              </div>
+            </div>
             <div class="row">
 
               <?php echo $question_display; ?>

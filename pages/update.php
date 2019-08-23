@@ -5,7 +5,7 @@
 
     // check if user is logged in
     if(!isset($_SESSION['user_id'])){
-        header('Location: ../index.php');
+        header('Location: ../index.php?user=no');
     }
 
 	$errors = array();
@@ -101,6 +101,7 @@
     		<div class="col-lg-4 col-md-6 col-sm-8 col-xs-10 mx-auto my-auto">
     			<div class="card shadow">
     				<div class="card-body">
+                        <h3 class="card-title text-center py-3">User edit</h3>
     					<form class="form" action="update.php" method="post">
     						<div class="container">
     							<?php

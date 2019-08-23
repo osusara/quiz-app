@@ -76,6 +76,7 @@
     		<div class="col-lg-4 col-md-6 col-sm-8 col-xs-10 mx-auto my-auto">
     			<div class="card shadow">
     				<div class="card-body">
+                        <h3 class="card-title text-center py-3">Sign up</h3>
     					<form class="form" action="registration.php" method="post">
     						<div class="container">
     							<?php

@@ -52,4 +52,22 @@
         echo '</div>';
 	}
 
+	// To display messeges
+	function display_messege($messege){
+
+		// Format and display form errors
+		echo '<div class="alert alert-success text-center">';
+        echo '<span class="text-center">'.$messege.'</span>';
+        echo '</div>';
+	}
+
+	// To display warnings
+	function display_warning($warning){
+
+		// Format and display form errors
+		echo '<div class="alert alert-warning text-center">';
+        echo '<span class="text-center">'.$warning.'</span>';
+        echo '</div>';
+	}
+
 ?>

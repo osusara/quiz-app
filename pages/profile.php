@@ -5,13 +5,26 @@
 
     // check if user is logged in
     if(!isset($_SESSION['user_id'])){
-        header('Location: ../index.php');
+        header('Location: ../index.php?user=no');
     }
 
 	$errors = array();
 	$name = "";
 	$email = "";
     $marks = "";
+    $messege = '';
+
+    if(isset($_GET['quiz_submit'])){
+        if($_GET['quiz_submit'] == true){
+            $messege = 'Quiz has been submited';
+        }
+    }
+
+    if(isset($_GET['user_update'])){
+        if($_GET['user_update'] == true){
+            $messege = 'User information updated';
+        }
+    }
 
 	// get user information
     $query = "SELECT * FROM user WHERE user_id = {$_SESSION['user_id']} LIMIT 1";
@@ -45,6 +58,11 @@
                 <div class="container">
                     <div class="card text-center shadow py-3">
                         <div class="card-body">
+                            <?php
+                                if(isset($messege) && !empty($messege)){
+                                    display_messege($messege);
+                                }
+                            ?>
                             <h3 class="card-title"><?php echo $name; ?></h3>
                             <div class="card bg-primary">
                                 <div class="card-body">

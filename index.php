@@ -4,7 +4,28 @@
 	require_once('includes/functions.php');
 
 	$errors = array();
+	$messege = '';
+	$warning = '';
 	$email = "";
+
+
+    if(isset($_GET['logout'])){
+        if($_GET['logout'] == true){
+            $messege = 'Logged out successfully';
+        }
+    }
+
+    if(isset($_GET['user'])){
+        if($_GET['user'] == 'no'){
+            $warning = 'You must login first';
+        }
+    }
+
+    if(isset($_GET['user_add'])){
+        if($_GET['user_add'] == true){
+            $messege = 'User successfully registered';
+        }
+    }
 
 	// check if the login button clicked
 	if(isset($_POST['submit'])){
@@ -70,11 +91,22 @@
     		<div class="col-lg-4 col-md-6 col-sm-8 col-xs-10 mx-auto my-auto">
     			<div class="card shadow">
     				<div class="card-body">
+    					<h3 class="card-title text-center py-3">Sign in</h3>
     					<div class="container">
     						<form class="form" action="index.php" method="post">
     							<?php
  					       			if(isset($errors) && !empty($errors)){
  					       				display_errors($errors);
+ 			    					}
+   					     		?>
+   					     		<?php
+ 					       			if(isset($messege) && !empty($messege)){
+ 					       				display_messege($messege);
+ 			    					}
+   					     		?>
+   					     		<?php
+ 					       			if(isset($warning) && !empty($warning)){
+ 					       				display_warning($warning);
  			    					}
    					     		?>
 	    						<div class="form-group">
